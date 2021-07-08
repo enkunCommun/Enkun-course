@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Covid 19 track</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <style>
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Covid 19 Live data </h2>
+        <br/>
+        <table class="table table-bordered table-dark">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Total Confirmed</th>
+                <th scope="col">Total Deaths</th>
+                <th scope="col">Total Recovered</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">1</th>
+                <td id="data"></td>
+                <td id="data2"></td>
+                <td id="data3"></td>
+              </tr>
+              <!-- <tr>
+                <th scope="row">2</th>
+                <td id="data2"></td>
+              </tr>
+              <tr>
+                <th scope="row">3</th>
+                <td id="data3"></td>
+              </tr> -->
+            </tbody>
+          </table>
+
+          <div id="poke-container">
+
+          </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            init()
+            pop()
+
+            function init() {
+                var url = "https://api.covid19api.com/summary";
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function() {
+                    if(xhr.readyState == XMLHttpRequest.DONE) {
+                        let count = JSON.parse(this.response)
+                        console.log(count);
+                        const countryNumber = document.createElement('div')
+                        const countryTotalDeaths = document.createElement('div')
+                        const countryTotalRecoverd = document.createElement('div')
+                        countryNumber.innerHTML = count.Global.TotalConfirmed
+                        countryTotalDeaths.innerHTML = count.Global.NewDeaths
+                        countryTotalRecovered = count.Global.NewConfirmed
+                        document.getElementById('data').append(countryNumber)
+                        document.getElementById('data2').append(countryTotalDeaths)
+                        document.getElementById('data3').append(countryTotalRecovered)
+                       
+                    }
+                }
+                xhr.open('GET', 'https://api.covid19api.com/summary', true);
+                xhr.send(null);
+            }
+
+        
+
+            function pop() {
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function() {
+                    if(xhr.readyState == XMLHttpRequest.DONE) {
+                        let pokemon = JSON.parse(this.response)
+                        console.log(pokemon);
+                        
+
+                    }
+                }
+                xhr.open('GET', 'https://pokeapi.co/api/v2/pokemon?limit=151', true);
+                xhr.send(null);
+            }
+
+            function renderPokemon(pokeData){
+                let allPokemonContainer = document.getElementById('poke-container');
+                let pokeContainer = document.createElement('div');
+                let pokeName = document.createElement('h3')
+                pokeName.innerHTML = pokeData.name
+
+                let pokeNumber = document.createElement('p')
+                pokeNumber.innerText = `#${pokeData.id}`
+                let pokeTypes = document.createElement('ul') 
+
+                createTypes(pokeData.types, pokeTypes) 
+
+                pokeContainer.append(pokeName, pokeNumber, pokeTypes);   
+                pokeContainer.append(pokeName, pokeNumber, pokeTypes);   
+
+            }
+
+            function createTypes(types, ul){ 
+                 types.forEach(function(type){  
+                     let typeLi = document.createElement('li');  
+                     typeLi.innerText = type['type']['name'];  
+                     ul.append(typeLi) 
+                     })
+            }
+           
+        })
+    </script>
+</body>
+</html>

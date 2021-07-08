@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+<body id="screen">
+    <!-- heading one -->
+   <div class="parent">
+    <h1 id="title">Tic Tac Toe</h1>
+    <!-- <h3 class="title-one">Student homework</h3> -->
+    <table>
+      <tr>
+        <td></td>
+        <td class="vert"></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td class="hori"></td>
+        <td class="vert hori"></td>
+        <td class="hori"></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td class="vert"></td>
+        <td></td>
+      </tr>
+    </table>
+   </div>
+
+
+   <!-- exercise -->
+   <p id="students">Hello Students</p>
+   <button onclick="changeColor('blue');">blue</button>
+   <button onclick="changeColor('yellow');">yellow</button>
+
+
+   <button onclick="showCountry()">
+     Show Countries
+   </button>
+
+   <p id="feed"></p>
+   <br/>
+
+   <!-- Home work -->
+   <button onclick="light('white')">Lighton</button>
+   <button onclick="light('black')">Lightoff</button>
+
+   <button onclick="mode('white');">Lighton</button>
+   <button onclick="mode('black');">Lightoff</button>
+   
+   <script>
+    function changeColor(newColor) {
+      let colors = document.getElementById('students');
+      colors.style.color = newColor;
+    }
+
+    function mode(newMode) {
+      let theme = document.getElementById('screen')
+      theme.style.backgroundColor = newMode;
+    }
+
+    /* Ajax */
+    function showCountry() {
+      var xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function() {
+        if(xhr.readyState == XMLHttpRequest.DONE) {
+          let countries = JSON.parse(this.response)
+          console.log(countries);
+          countries.forEach(country => {
+            const countryName = document.createElement('div');
+            const countryFlag = document.createElement('img');
+            countryFlag.src = country.flag;
+            countryName.innerHTML = country.name
+            countryFlag.style.width = "300px"
+            countryName.append(countryFlag)
+            document.getElementById('feed').append(countryName);
+          })
+        }
+      }
+      xhr.open('GET', 'https://restcountries.eu/rest/v2/all', true)
+      xhr.send(null);
+    }
+
+  
+
+   </script>
+</body>
+</html>
