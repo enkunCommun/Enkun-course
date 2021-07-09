@@ -45,7 +45,9 @@
           </table>
 
           <div id="poke-container">
-
+              <li id="one"></li>
+              <li id="two"></li>
+              <li id="three"></li>
           </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -75,6 +77,30 @@
                 }
                 xhr.open('GET', 'https://api.covid19api.com/summary', true);
                 xhr.send(null);
+            }
+            
+            getData();
+
+            async function getData() {
+              const response = await fetch('https://api.covid19api.com/summary');
+              const data = await response.json();
+              console.log("data: ")
+              console.log(data);
+              const countryNumber = document.createElement('div')
+              const countryTotalDeaths = document.createElement('div')
+              const countryTotalRecoverd = document.createElement('div')
+              countryNumber.innerHTML = data.Global.TotalConfirmed
+              countryTotalDeaths.innerHTML = data.Global.NewDeaths
+              countryTotalRecovered = data.Global.NewConfirmed
+              document.getElementById('one').append(countryNumber)
+              document.getElementById('two').append(countryTotalDeaths)
+              document.getElementById('three').append(countryTotalRecovered)
+
+              const rows = data.split('\n').slice(1);
+              rows.forEach(elt => {
+                const row = elt.split(',');
+                console.log(row)
+              })
             }
 
         
